@@ -25,6 +25,10 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    thumbnail_url = serializers.SerializerMethodField()
+
+    def get_thumbnail_url(self, obj):
+        return obj.get_thumbnail_url()
     image = ImageSerializer(many=True, read_only=True)
     uploaded_images = serializers.ListField(
         child = serializers.ImageField(max_length = 1000000, allow_empty_file = False, use_url = False),
@@ -32,7 +36,7 @@ class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
-        fields = [ "id","image","uploaded_images"]
+        fields = [ "id","image","uploaded_images","thumbnail_url"]
     
     
     def create(self, validated_data):
