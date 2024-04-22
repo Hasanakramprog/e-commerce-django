@@ -1,1 +1,1 @@
-web: gunicorn ecommerce_backend.wsgi --log-file-
+web: gunicorn ecommerce_backend.wsgi --log-file- --bind 0.0.0.0:$PORT
