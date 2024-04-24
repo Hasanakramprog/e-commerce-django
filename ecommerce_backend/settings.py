@@ -139,6 +139,7 @@ STATIC_URL = '/thumbnail/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'thumbnail')
 ]
+
 STATIC_ROOT = os.path.join(BASE_DIR,'assets')
 
 # Default primary key field type
@@ -148,3 +149,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # MEDIA_URL = '/thumbnail/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'thumbnail')  # Adjust path as needed
+API_DOMAIN='http://127.0.0.1:8000'

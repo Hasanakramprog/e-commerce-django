@@ -4,6 +4,8 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from category.models import Category  # Import the Category model
 from brand.models import Brand 
+from django.conf import settings
+
 
 class Product(models.Model):
     thumbnail = models.ImageField(upload_to='thumbnail')
@@ -28,7 +30,7 @@ class Product(models.Model):
             # thumbnail_root = os.path.join(BASE_DIR, 'thumbnail')
             # image_url = f'{thumbnail_root+'\\'+url}' 
             # image_url=image_url.replace("\\","/")
-            return self.thumbnail.url  # Return the image URL
+            return settings.API_DOMAIN+'/'+self.thumbnail.url  # Return the image URL
         else:
             return None  # Handle cases where no image is uploaded
     def __str__(self):
