@@ -1,5 +1,5 @@
 # views.py
-from rest_framework import viewsets,generics
+from rest_framework import viewsets,generics,permissions
 
 from api.serializers import CategorySerializer
 from category.models import Category
@@ -27,10 +27,16 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+# class ImageViewSet(viewsets.ModelViewSet):
+#     queryset = Image.objects.all()
+#     serializer_class = ImageSerializer
+#     # Create your views here.
 class ImageViewSet(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
+    queryset = Image.objects.all()  # Consider permission filtering if needed
     serializer_class = ImageSerializer
-    # Create your views here.
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # Example permission
+
+    # Add access control logic here (e.g., IsAdminUser permission class or custom permissions)    
 class CategoryProductsView(APIView):
     def get(self, request, category_name):
         try:
@@ -46,15 +52,18 @@ class ProductDetail(RetrieveAPIView):
     queryset = Product.objects.all()  # All products in the database
     serializer_class = ProductSerializer
 
+def slice_list(data, limit, skip=0):
 
-from django.shortcuts import render
+    return data[skip:skip + limit] if len(data) >= skip + limit else data[skip:]
 
-def all_products(request):
+def all_products(request,limit,skip):
     # Retrieve data from the table
 
     
 
     products = Product.objects.all()  # Retrieve all products
+    products=slice_list(products,limit,skip)    
+
     images = Image.objects.filter(product__in=products).select_related('product')  # Prefetch images
 
     # p_list=[]
@@ -70,7 +79,6 @@ def all_products(request):
             imagess.append(image.image.url)  # Access image URL
         p_list.get('products').append({'id':product.id,'title':product.title,'description':product.description,
                        'price':int(product.price),'discountPercentage':float(product.discount_percentage),'rating':float(product.rating),'stock':product.stock,'brand':brand_name,'thumbnail':product.get_thumbnail_url(),'category':category_name,'images':imagess}) 
-
     response = JsonResponse(p_list, safe=False)  # Set safe=False for non-primitive data types
     return response
 
