@@ -2,9 +2,7 @@
 from django.urls import include, path
 from rest_framework import routers
 from . import views
-from .views import CategoryProductsView
-from django.conf import settings
-from django.conf.urls.static import static
+from .views import MessageView
 router = routers.DefaultRouter()
 router.register(r'categories', views.CategoryViewSet,basename='category')
 # router.register(r'products', views.ProductViewSet)
@@ -21,6 +19,8 @@ urlpatterns = [
     path('products/category/<str:keyword>/', views.product_by_category, name='produc_by_category'),
     path('products/<int:pk>/', views.product_detail_view, name='product_by_id'),
     path('products/serach/', views.product_search_view, name='serach'),
+    # path('products/order/', views.product_order_view, name='order'),
+    path('products/order/', MessageView.as_view(), name='order'),
     # path('products/<int:pk>/', views.ProductDetail.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from category.models import Category
 from product.models import Product
 from image.models import Image
-
+from django.conf import settings
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -11,10 +11,14 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
     class Meta:
         model = Image
         fields = '__all__'
-
+    def get_image_url(self, obj):
+        if settings.DEBUG:  # debug enabled for dev and stage
+            return '%s%s%s' % (settings.API_DOMAIN, settings.MEDIA_URL, obj.image.url)
+        return obj.img.url
 # class ProductSerializer(serializers.ModelSerializer):
 #     images = ImageSerializer(many=True, read_only=True)  # Nested serializer for images
 

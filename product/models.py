@@ -1,5 +1,3 @@
-import os
-from pathlib import Path
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from category.models import Category  # Import the Category model
@@ -9,7 +7,8 @@ from django.conf import settings
 
 class Product(models.Model):
     thumbnail = models.ImageField(upload_to='thumbnail')
-    id = models.IntegerField(primary_key=True)  # Assuming the ID is unique
+    id =  models.AutoField(primary_key=True)  # Assuming the ID is unique
+    # id = models.IntegerField(primary_key=True)  # Assuming the ID is unique
     title = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -30,6 +29,7 @@ class Product(models.Model):
             # thumbnail_root = os.path.join(BASE_DIR, 'thumbnail')
             # image_url = f'{thumbnail_root+'\\'+url}' 
             # image_url=image_url.replace("\\","/")
+            
             return settings.API_DOMAIN+'/'+self.thumbnail.url  # Return the image URL
         else:
             return None  # Handle cases where no image is uploaded

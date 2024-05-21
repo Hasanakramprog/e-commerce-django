@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-pdf-nd-g5=fd2-mnaz7+v*6=cst+$nz%wuj#m9&nzr2-q1)-rn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','192.168.1.21','192.168.137.1','192.168.1.8']
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'image.apps.ImageConfig',
     'rest_framework',
     'corsheaders',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
